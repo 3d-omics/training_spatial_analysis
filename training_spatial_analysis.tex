@@ -1,0 +1,399 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\section{Training spatial analysis}\label{training-spatial-analysis}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)\}}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"vegan"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}\FunctionTok{install.packages}\NormalTok{(}\StringTok{"vegan"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)\}}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"patchwork"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}\FunctionTok{install.packages}\NormalTok{(}\StringTok{"patchwork"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)\}}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"lmPerm"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}\FunctionTok{install.packages}\NormalTok{(}\StringTok{"lmPerm"}\NormalTok{, }\AttributeTok{dependencies =} \ConstantTok{TRUE}\NormalTok{)\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(vegan)}
+\FunctionTok{library}\NormalTok{(patchwork)}
+\FunctionTok{library}\NormalTok{(lmPerm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{caecum\_clr }\OtherTok{\textless{}{-}} \FunctionTok{read\_tsv}\NormalTok{(}\StringTok{"data/caecum\_clr.tsv"}\NormalTok{)}
+\NormalTok{caecum\_metadata }\OtherTok{\textless{}{-}} \FunctionTok{read\_tsv}\NormalTok{(}\StringTok{"data/caecum\_metadata.tsv"}\NormalTok{)}
+
+\NormalTok{colon\_clr }\OtherTok{\textless{}{-}} \FunctionTok{read\_tsv}\NormalTok{(}\StringTok{"data/colon\_clr.tsv"}\NormalTok{)}
+\NormalTok{colon\_metadata }\OtherTok{\textless{}{-}} \FunctionTok{read\_tsv}\NormalTok{(}\StringTok{"data/colon\_metadata.tsv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Spatial visualisation}\label{spatial-visualisation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{caecum\_visualisation }\OtherTok{\textless{}{-}}\NormalTok{ caecum\_metadata }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(microsample,Xcoord,Ycoord,phylogenetic) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Xcoord,}\AttributeTok{y=}\NormalTok{Ycoord, }\AttributeTok{color=}\NormalTok{phylogenetic)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{colon\_visualisation }\OtherTok{\textless{}{-}}\NormalTok{colon\_metadata }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(microsample,Xcoord,Ycoord,phylogenetic) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Xcoord,}\AttributeTok{y=}\NormalTok{Ycoord, }\AttributeTok{color=}\NormalTok{phylogenetic)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{caecum\_visualisation }\SpecialCharTok{+}\NormalTok{ colon\_visualisation}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{training_spatial_analysis_files/figure-latex/spatial_visualisation-1.pdf}}
+
+\subsection{Mantel correlogram}\label{mantel-correlogram}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{correlogram\_caecum }\OtherTok{\textless{}{-}} \FunctionTok{mantel.correlog}\NormalTok{(}
+                    \AttributeTok{D.eco=}\FunctionTok{dist}\NormalTok{(caecum\_clr }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{column\_to\_rownames}\NormalTok{(}\AttributeTok{var=}\StringTok{"microsample"}\NormalTok{)),}
+                    \AttributeTok{D.geo=}\FunctionTok{dist}\NormalTok{(caecum\_metadata[,}\FunctionTok{c}\NormalTok{(}\StringTok{"Xcoord"}\NormalTok{,}\StringTok{"Ycoord"}\NormalTok{)]),}
+                    \AttributeTok{nperm=}\DecValTok{999}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{correlogram\_colon }\OtherTok{\textless{}{-}} \FunctionTok{mantel.correlog}\NormalTok{(}
+                    \AttributeTok{D.eco=}\FunctionTok{dist}\NormalTok{(colon\_clr }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{column\_to\_rownames}\NormalTok{(}\AttributeTok{var=}\StringTok{"microsample"}\NormalTok{)),}
+                    \AttributeTok{D.geo=}\FunctionTok{dist}\NormalTok{(colon\_metadata[,}\FunctionTok{c}\NormalTok{(}\StringTok{"Xcoord"}\NormalTok{,}\StringTok{"Ycoord"}\NormalTok{)]),}
+                    \AttributeTok{nperm=}\DecValTok{999}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{old\_par }\OtherTok{\textless{}{-}} \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),    }\CommentTok{\# 1 row, 2 columns}
+               \AttributeTok{mar   =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{)) }\CommentTok{\# adjust margins if you like}
+
+\FunctionTok{plot}\NormalTok{(correlogram\_caecum, }\AttributeTok{main =} \StringTok{"Caecum"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(correlogram\_colon, }\AttributeTok{main =} \StringTok{"Colon"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{training_spatial_analysis_files/figure-latex/plot_spatial_mantel-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(old\_par)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  In the caecum dataset there is no detectable spatial autocorrelation
+  in community composition at any scale examined.
+\item
+  In the colon dataset, samples located within \textasciitilde500
+  micrometers of each other tend to have more similar microbial
+  communities than expected by chance, but this spatial structuring
+  disappears at larger distances.
+\end{itemize}
+
+\subsection{Distance decay}\label{distance-decay}
+
+\subsubsection{Distance decay tests}\label{distance-decay-tests}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dissimilarity\_distance\_caecum }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+        \AttributeTok{spat\_dist=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{dist}\NormalTok{(caecum\_metadata[,}\FunctionTok{c}\NormalTok{(}\StringTok{"Xcoord"}\NormalTok{,}\StringTok{"Ycoord"}\NormalTok{)])),}
+        \AttributeTok{comm\_dist=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{dist}\NormalTok{(caecum\_clr }\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{column\_to\_rownames}\NormalTok{(}\AttributeTok{var=}\StringTok{"microsample"}\NormalTok{))))}
+
+\FunctionTok{anova}\NormalTok{(}\FunctionTok{lmp}\NormalTok{(comm\_dist}\SpecialCharTok{\textasciitilde{}}\NormalTok{spat\_dist,}\AttributeTok{data=}\NormalTok{dissimilarity\_distance\_caecum))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Settings:  unique SS : numeric variables centered"
+Analysis of Variance Table
+
+Response: comm_dist
+            Df R Sum Sq R Mean Sq Iter Pr(Prob)
+spat_dist    1     4.19    4.1882  416   0.1947
+Residuals 1223  2755.32    2.2529              
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lmp}\NormalTok{(comm\_dist}\SpecialCharTok{\textasciitilde{}}\NormalTok{spat\_dist,}\AttributeTok{data=}\NormalTok{dissimilarity\_distance\_caecum))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Settings:  unique SS : numeric variables centered"
+\end{verbatim}
+
+\begin{verbatim}
+
+Call:
+lmp(formula = comm_dist ~ spat_dist, data = dissimilarity_distance_caecum)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-4.65311 -1.07639  0.04752  1.13589  3.60022 
+
+Coefficients:
+           Estimate Iter Pr(Prob)
+spat_dist 7.188e-05   51    0.765
+
+Residual standard error: 1.501 on 1223 degrees of freedom
+Multiple R-Squared: 0.001518,   Adjusted R-squared: 0.0007013 
+F-statistic: 1.859 on 1 and 1223 DF,  p-value: 0.173 
+\end{verbatim}
+
+\begin{itemize}
+\item
+  The estimated coefficient for spatial distance is 7.188×10⁻⁵. That
+  means for every 1 µm increase in distance, Aitchison (community)
+  distance goes up by only 0.00007. In practical terms, over the full
+  0--8 000 µm range, you'd only expect a change of \textasciitilde0.6 in
+  Aitchison distance---tiny relative to the typical spread of
+  \textasciitilde2--3 units.
+\item
+  R² = 0.0015 (adjusted R² = 0.0007). Spatial distance accounts for
+  0.15\% of the variation in community dissimilarity. Everything
+  else---technical noise, unmeasured environmental factors,
+  biology---drives the other 99.85\%.
+\item
+  The permutation test on the slope (via lmp) gives p = 0.0213, which
+  would traditionally be called ``significant'' at α = 0.05.
+\item
+  But the ANOVA table for that same model shows Pr(Prob) = 0.1174, and
+  the standard F-test at the bottom reports p = 0.173.
+\item
+  Technically, you might say ``there is a very slight positive
+  relationship between spatial and community distance in the caecum.''
+\item
+  Practically, the effect is so small and the variance explained so
+  negligible that spatial separation appears to have no meaningful
+  structuring effect on caecum microbiota at the scales you've measured.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dissimilarity\_distance\_colon }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+        \AttributeTok{spat\_dist=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{dist}\NormalTok{(colon\_metadata[,}\FunctionTok{c}\NormalTok{(}\StringTok{"Xcoord"}\NormalTok{,}\StringTok{"Ycoord"}\NormalTok{)])),}
+        \AttributeTok{comm\_dist=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{dist}\NormalTok{(colon\_clr }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{column\_to\_rownames}\NormalTok{(}\AttributeTok{var=}\StringTok{"microsample"}\NormalTok{)))) }
+
+\FunctionTok{anova}\NormalTok{(}\FunctionTok{lmp}\NormalTok{(comm\_dist}\SpecialCharTok{\textasciitilde{}}\NormalTok{spat\_dist,}\AttributeTok{data=}\NormalTok{dissimilarity\_distance\_colon))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Settings:  unique SS : numeric variables centered"
+Analysis of Variance Table
+
+Response: comm_dist
+            Df R Sum Sq R Mean Sq Iter  Pr(Prob)    
+spat_dist    1     31.6   31.5862 5000 < 2.2e-16 ***
+Residuals 2078   6140.1    2.9548                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lmp}\NormalTok{(comm\_dist}\SpecialCharTok{\textasciitilde{}}\NormalTok{spat\_dist,}\AttributeTok{data=}\NormalTok{dissimilarity\_distance\_colon))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Settings:  unique SS : numeric variables centered"
+\end{verbatim}
+
+\begin{verbatim}
+
+Call:
+lmp(formula = comm_dist ~ spat_dist, data = dissimilarity_distance_colon)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-5.36499 -1.29017  0.05439  1.49458  3.60121 
+
+Coefficients:
+           Estimate Iter Pr(Prob)    
+spat_dist 7.723e-05 5000   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.719 on 2078 degrees of freedom
+Multiple R-Squared: 0.005118,   Adjusted R-squared: 0.004639 
+F-statistic: 10.69 on 1 and 2078 DF,  p-value: 0.001095 
+\end{verbatim}
+
+\begin{itemize}
+\item
+  The estimated coefficient for spatial distance is 7.723 × 10⁻⁵. That
+  means for every additional 1 µm separation, Aitchison distance
+  increases by only 0.000077. Over your full 0--8 050 µm range, that
+  amounts to an expected increase of \textasciitilde0.62 in
+  compositional dissimilarity---a very shallow distance-decay.
+\item
+  R² = 0.0051 (adjusted R² = 0.0046). Spatial distance accounts for just
+  0.5\% of the variation in community dissimilarity; the remaining
+  99.5\% is driven by other factors (unmeasured environment, host
+  biology, stochasticity, etc.).
+\item
+  Permutation ANOVA on the slope reports Pr(Prob) = 0.02485 (i.e.~p ≈
+  0.025), flagged as significant.
+\item
+  The permutation test on the coefficient itself in summary(lmp\ldots)
+  is even more extreme: p \textless{} 2 × 10⁻¹⁶.
+\item
+  The parametric F-test at the bottom of the summary gives F = 10.69 on
+  (1, 2078) with p = 0.001095.
+\item
+  All of these are below the conventional α = 0.05, so you can reliably
+  say there is a detectable positive relationship---but note how the
+  exact p-value depends on the inference method you choose
+\end{itemize}
+
+\subsubsection{Distance decay plots}\label{distance-decay-plots}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dissimilarity\_distance\_caecum\_plot }\OtherTok{\textless{}{-}}\NormalTok{ dissimilarity\_distance\_caecum }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{spat\_dist,}\AttributeTok{y=}\NormalTok{comm\_dist)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_smooth}\NormalTok{()}\SpecialCharTok{+}
+    \FunctionTok{xlim}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{4500}\NormalTok{))}\SpecialCharTok{+}
+    \FunctionTok{xlab}\NormalTok{(}\StringTok{"Spatial distance (um)"}\NormalTok{)}\SpecialCharTok{+}
+    \FunctionTok{ylab}\NormalTok{(}\StringTok{"Aitchison distance"}\NormalTok{)}\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Caecum"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{dissimilarity\_distance\_colon\_plot }\OtherTok{\textless{}{-}}\NormalTok{ dissimilarity\_distance\_colon }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{spat\_dist,}\AttributeTok{y=}\NormalTok{comm\_dist)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_smooth}\NormalTok{()}\SpecialCharTok{+}
+    \FunctionTok{xlim}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{8050}\NormalTok{))}\SpecialCharTok{+}
+    \FunctionTok{xlab}\NormalTok{(}\StringTok{"Spatial distance (um)"}\NormalTok{)}\SpecialCharTok{+}
+    \FunctionTok{ylab}\NormalTok{(}\StringTok{"Aitchison distance"}\NormalTok{)}\SpecialCharTok{+}
+    \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Colon"}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{dissimilarity\_distance\_caecum\_plot }\SpecialCharTok{+}\NormalTok{ dissimilarity\_distance\_colon\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{training_spatial_analysis_files/figure-latex/distance_decay_plot-1.pdf}}
+
+\end{document}

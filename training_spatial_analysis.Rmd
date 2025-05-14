@@ -1,0 +1,148 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# Training spatial analysis
+
+```{r install_libraries, comment="", message=FALSE, warning=FALSE}
+if (!requireNamespace("tidyverse", quietly = TRUE)) {install.packages("tidyverse", dependencies = TRUE)}
+if (!requireNamespace("vegan", quietly = TRUE)) {install.packages("vegan", dependencies = TRUE)}
+if (!requireNamespace("patchwork", quietly = TRUE)) {install.packages("patchwork", dependencies = TRUE)}
+if (!requireNamespace("lmPerm", quietly = TRUE)) {install.packages("lmPerm", dependencies = TRUE)}
+```
+
+```{r load_libraries, comment="", message=FALSE, warning=FALSE}
+library(tidyverse)
+library(vegan)
+library(patchwork)
+library(lmPerm)
+```
+
+```{r load_data, comment="", message=FALSE, warning=FALSE}
+caecum_clr <- read_tsv("data/caecum_clr.tsv")
+caecum_metadata <- read_tsv("data/caecum_metadata.tsv")
+
+colon_clr <- read_tsv("data/colon_clr.tsv")
+colon_metadata <- read_tsv("data/colon_metadata.tsv")
+```
+
+## Spatial visualisation
+
+```{r spatial_visualisation, comment="", message=FALSE, warning=FALSE}
+caecum_visualisation <- caecum_metadata %>% 
+  select(microsample,Xcoord,Ycoord,phylogenetic) %>% 
+  ggplot(aes(x=Xcoord,y=Ycoord, color=phylogenetic)) +
+    geom_point() + 
+    theme_minimal()
+
+colon_visualisation <-colon_metadata %>% 
+  select(microsample,Xcoord,Ycoord,phylogenetic) %>% 
+  ggplot(aes(x=Xcoord,y=Ycoord, color=phylogenetic)) +
+    geom_point() + 
+    theme_minimal()
+
+caecum_visualisation + colon_visualisation
+
+```
+
+## Mantel correlogram
+
+```{r caecum_spatial_mantel, comment="", message=FALSE, warning=FALSE}
+correlogram_caecum <- mantel.correlog(
+                    D.eco=dist(caecum_clr %>% column_to_rownames(var="microsample")),
+                    D.geo=dist(caecum_metadata[,c("Xcoord","Ycoord")]),
+                    nperm=999)
+```
+
+```{r colon_spatial_mantel, comment="", message=FALSE, warning=FALSE}
+correlogram_colon <- mantel.correlog(
+                    D.eco=dist(colon_clr %>% column_to_rownames(var="microsample")),
+                    D.geo=dist(colon_metadata[,c("Xcoord","Ycoord")]),
+                    nperm=999)
+```
+
+```{r plot_spatial_mantel, comment="", message=FALSE, warning=FALSE}
+old_par <- par(mfrow = c(1, 2),    # 1 row, 2 columns
+               mar   = c(4,4,2,1)) # adjust margins if you like
+
+plot(correlogram_caecum, main = "Caecum")
+plot(correlogram_colon, main = "Colon")
+par(old_par)
+```
+
+- In the caecum dataset there is no detectable spatial autocorrelation in community composition at any scale examined.
+- In the colon dataset, samples located within ~500 micrometers of each other tend to have more similar microbial communities than expected by chance, but this spatial structuring disappears at larger distances.
+
+## Distance decay
+
+### Distance decay tests
+
+```{r distance_decay_caecum, comment="", message=FALSE, warning=FALSE}
+dissimilarity_distance_caecum <- data.frame(
+        spat_dist=as.numeric(dist(caecum_metadata[,c("Xcoord","Ycoord")])),
+        comm_dist=as.numeric(dist(caecum_clr %>%column_to_rownames(var="microsample"))))
+
+anova(lmp(comm_dist~spat_dist,data=dissimilarity_distance_caecum))
+summary(lmp(comm_dist~spat_dist,data=dissimilarity_distance_caecum))
+```
+
+- The estimated coefficient for spatial distance is 7.188×10⁻⁵. That means for every 1 µm increase in distance, Aitchison (community) distance goes up by only 0.00007. In practical terms, over the full 0–8 000 µm range, you’d only expect a change of ~0.6 in Aitchison distance—tiny relative to the typical spread of ~2–3 units.
+
+- R² = 0.0015 (adjusted R² = 0.0007). Spatial distance accounts for 0.15% of the variation in community dissimilarity. Everything else—technical noise, unmeasured environmental factors, biology—drives the other 99.85%.
+
+- The permutation test on the slope (via lmp) gives p = 0.0213, which would traditionally be called “significant” at α = 0.05.
+
+- But the ANOVA table for that same model shows Pr(Prob) = 0.1174, and the standard F-test at the bottom reports p = 0.173.
+
+- Technically, you might say “there is a very slight positive relationship between spatial and community distance in the caecum.”
+
+- Practically, the effect is so small and the variance explained so negligible that spatial separation appears to have no meaningful structuring effect on caecum microbiota at the scales you’ve measured.
+
+```{r distance_decay_colon, comment="", message=FALSE, warning=FALSE}
+dissimilarity_distance_colon <- data.frame(
+        spat_dist=as.numeric(dist(colon_metadata[,c("Xcoord","Ycoord")])),
+        comm_dist=as.numeric(dist(colon_clr %>% column_to_rownames(var="microsample")))) 
+
+anova(lmp(comm_dist~spat_dist,data=dissimilarity_distance_colon))
+summary(lmp(comm_dist~spat_dist,data=dissimilarity_distance_colon))
+```
+
+- The estimated coefficient for spatial distance is 7.723 × 10⁻⁵. That means for every additional 1 µm separation, Aitchison distance increases by only 0.000077. Over your full 0–8 050 µm range, that amounts to an expected increase of ~0.62 in compositional dissimilarity—a very shallow distance-decay.
+
+- R² = 0.0051 (adjusted R² = 0.0046). Spatial distance accounts for just 0.5% of the variation in community dissimilarity; the remaining 99.5% is driven by other factors (unmeasured environment, host biology, stochasticity, etc.).
+
+- Permutation ANOVA on the slope reports Pr(Prob) = 0.02485 (i.e. p ≈ 0.025), flagged as significant.
+
+- The permutation test on the coefficient itself in summary(lmp…) is even more extreme: p < 2 × 10⁻¹⁶.
+
+- The parametric F-test at the bottom of the summary gives F = 10.69 on (1, 2078) with p = 0.001095.
+
+- All of these are below the conventional α = 0.05, so you can reliably say there is a detectable positive relationship—but note how the exact p-value depends on the inference method you choose
+
+### Distance decay plots
+
+```{r distance_decay_plot, comment="", message=FALSE, warning=FALSE}
+
+dissimilarity_distance_caecum_plot <- dissimilarity_distance_caecum %>% 
+    ggplot(aes(x=spat_dist,y=comm_dist)) +
+    geom_smooth()+
+    xlim(c(0,4500))+
+    xlab("Spatial distance (um)")+
+    ylab("Aitchison distance")+
+    ggtitle("Caecum") +
+    theme_minimal()
+
+dissimilarity_distance_colon_plot <- dissimilarity_distance_colon %>% 
+    ggplot(aes(x=spat_dist,y=comm_dist)) +
+    geom_smooth()+
+    xlim(c(0,8050))+
+    xlab("Spatial distance (um)")+
+    ylab("Aitchison distance")+
+    ggtitle("Colon") +
+    theme_minimal()
+
+dissimilarity_distance_caecum_plot + dissimilarity_distance_colon_plot
+```
+
+
